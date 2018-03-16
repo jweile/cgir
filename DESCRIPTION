@@ -1,0 +1,10 @@
+Package: cgir
+Title: Support for using R as CGI scripts
+Version: 0.0.0.9000
+Authors@R: person("Jochen", "Weile", email = "jochenweile@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.2.3)
+License: GPL
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
