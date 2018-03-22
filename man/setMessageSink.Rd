@@ -6,6 +6,10 @@
 \usage{
 setMessageSink(filename = "msg.log")
 }
+\arguments{
+\item{filename}{the log file to which messages will be redirected. Must be writable 
+for apache user!}
+}
 \description{
 Redirects any messages (e.g. errors) to a log file. Doing so at the start of your script is
 absolutely vital! Otherwise any potential info messages, warnings or errors can corrupt your

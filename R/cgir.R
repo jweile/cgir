@@ -6,6 +6,9 @@
 #' Redirects any messages (e.g. errors) to a log file. Doing so at the start of your script is
 #' absolutely vital! Otherwise any potential info messages, warnings or errors can corrupt your
 #' HTTP response
+#' @param filename the log file to which messages will be redirected. Must be writable 
+#'    for apache user!
+#' @export
 setMessageSink <- function(filename="msg.log") {
 	sink(file(filename, open="w"),type="message")
 }
@@ -106,6 +109,24 @@ interpolate <- function(filename, values,sentinel="%") {
 }
 
 
+#' Respond to HTTP request using a given MIME type
+#' 
+#' Responds to an HTTP request using a given MIME type
+#' 
+#' @param content a character string containing the content
+#' @param mime a character string containing the MIME type (e.g. "text/html" or "image/gif")
+#' @export
+#' @examples
+#' error <- "Insufficient amount of coffee!"
+#' errorHTML <- interpolate("../../html/app/error.html",c(message=error))
+#' respondHTML(errorHTML)
+respond <- function(content,mime) {
+	#Content type MUST be followed by two newline characters!!
+	cat(paste0("Content-type: ",mime,"\n\n"))
+	cat(content)
+	return(invisible(NULL))
+}
+
 #' Respond to HTTP request using HTML
 #' 
 #' Responds to an HTTP request using a given HTML content
@@ -117,8 +138,104 @@ interpolate <- function(filename, values,sentinel="%") {
 #' errorHTML <- interpolate("../../html/app/error.html",c(message=error))
 #' respondHTML(errorHTML)
 respondHTML <- function(html) {
-	#Content type MUST be followed by two newline characters!!
-	cat("Content-type: text/html\n\n")
-	cat(html)
-	return(invisible(NULL))
+	respond(html,"text/html")
+	# cat("Content-type: text/html\n\n")
+	# cat(html)
+	# return(invisible(NULL))
+}
+
+
+respondTemplateHTML <- function(templateFile,values) {
+	respondHTML(interpolate(templateFile,values))
+}
+
+#' Respond to HTTP request using JSON
+#' 
+#' Responds to an HTTP request using JSON formatted data
+#' 
+#' @param content a named list, which will be serialized to JSON using RJSONIO
+#' @export
+#' @examples
+#' data <- list(foo="bar",baz=1:5)
+#' respondJSON(data)
+respondJSON <- function(content) {
+	library(RJSONIO)
+	json <- toJSON(content)
+	respond(json,"application/json")
+	# cat("Content-type: application/json\n\n")
+	# cat(json)
+	# return(invisible(NULL))
+}
+
+#' Respond to HTTP request using plain text
+#' 
+#' Responds to an HTTP request using plain text
+#' 
+#' @param content a character string to respond
+#' @export
+#' @examples
+#' respondTEXT("Hello World!")
+respondTEXT <- function(text) {
+	respond(text,"text/plain")
+	# cat("Content-type: text/plain\n\n")
+	# cat(text)
+	# return(invisible(NULL))
+}
+
+#' Respond to HTTP request using binary data in a given MIME type
+#' 
+#' Responds to an HTTP request using binary data a given MIME type
+#' 
+#' @param binFile the name of a file containing the binary data
+#' @param mime a character string containing the MIME type (e.g. "image/gif")
+#' @export
+#' @examples
+#' error <- "Insufficient amount of coffee!"
+#' errorHTML <- interpolate("../../html/app/error.html",c(message=error))
+#' respondHTML(errorHTML)
+respondBinary <- function(binFile,mime) {
+	cat(paste0("Content-type: ",mime,"\n\n"))
+	system(paste("cat",binFile))
+}
+
+#' Respond to HTTP request with PNG image data
+#' 
+#' Responds to an HTTP request with PNG image data from a given PNG file
+#' 
+#' @param pngFile the name of a file containing the binary data
+#' @export
+respondPNG <- function(pngFile) {
+	respondBinary(pngFile,"image/png")
+}
+
+#' Respond to HTTP request with PDF data
+#' 
+#' Responds to an HTTP request with PDF data from a given PDF file
+#' 
+#' @param pdfFile the name of a file containing the binary data
+#' @export
+respondPDF <- function(pdfFile) {
+	respondBinary(pdfFile,"application/pdf")
+}
+
+
+#' Respond to HTTP request with a 400:BadRequest error
+#' 
+#' Responds to an HTTP request with 400:BadRequest error
+#' 
+#' @param message the error message
+#' @export
+respond400 <- function(message) {
+	cat("Status: 400 Bad Request\nContent-Type: text/plain\n\nERROR: ",message)
+}
+
+
+#' Respond to HTTP request with a 404:NotFound error
+#' 
+#' Responds to an HTTP request with 404:NotFound error
+#' 
+#' @param message the error message
+#' @export
+respond404 <- function(message) {
+	cat("Status: 404 Not Found\nContent-Type: text/plain\n\nERROR: ",message)
 }
