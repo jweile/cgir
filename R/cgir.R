@@ -92,7 +92,7 @@ readPOST <- function() {
 #' @param values a named vector, in which the names are used as the variable names, and the 
 #'     values as the variable values.
 #' @param sentinel a sentinel character indicating a variable in the text. Defaults to "\%".
-#' @returns the interpolated text.
+#' @return the interpolated text.
 #' @export
 #' @examples
 #' error <- "Insufficient amount of coffee!"
@@ -145,6 +145,17 @@ respondHTML <- function(html) {
 }
 
 
+#' Respond to HTTP request using HTML interpolated from a template file
+#' 
+#' Responds to an HTTP request using a given HTML file as well as interpolated content
+#' 
+#' @param templateFile the name of the file containing the HTML content
+#' @param values a named vector, in which the names are used as the variable names, and the 
+#'     values as the variable values.
+#' @export
+#' @examples
+#' error <- "Insufficient amount of coffee!"
+#' respondTemplateHTML("../../html/app/error.html",c(message=error))
 respondTemplateHTML <- function(templateFile,values) {
 	respondHTML(interpolate(templateFile,values))
 }

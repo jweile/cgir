@@ -14,6 +14,9 @@ values as the variable values.}
 
 \item{sentinel}{a sentinel character indicating a variable in the text. Defaults to "\%".}
 }
+\value{
+the interpolated text.
+}
 \description{
 This function reads the contents of a file and performs a search-and-replace
 on a set of given variable names with given values. In the context of a CGI script,
