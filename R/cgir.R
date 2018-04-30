@@ -250,3 +250,14 @@ respond400 <- function(message) {
 respond404 <- function(message) {
 	cat("Status: 404 Not Found\nContent-Type: text/plain\n\nERROR: ",message)
 }
+
+
+#' Respond to HTTP request with a 500 Internal Server Error
+#' 
+#' Responds to an HTTP request with 500 Internal Server Error
+#' 
+#' @param message the error message
+#' @export
+respond500 <- function(message) {
+	cat("Status: 500 Internal Server Error\nContent-Type: text/plain\n\nERROR: ",message)
+}
