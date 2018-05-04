@@ -204,7 +204,9 @@ respondTEXT <- function(text) {
 #' error <- "Insufficient amount of coffee!"
 #' errorHTML <- interpolate("../../html/app/error.html",c(message=error))
 #' respondHTML(errorHTML)
-respondBinary <- function(binFile,mime) {
+respondBinary <- function(binFile,mime,filename,download=FALSE) {
+	dispo <- if (download) "attachment" else "inline"
+	cat(paste0("Content-Disposition: ",dispo,"; filename=\"",filename,"\"\n"))
 	cat(paste0("Content-type: ",mime,"\n\n"))
 	system(paste("cat",binFile))
 }
@@ -215,8 +217,8 @@ respondBinary <- function(binFile,mime) {
 #' 
 #' @param pngFile the name of a file containing the binary data
 #' @export
-respondPNG <- function(pngFile) {
-	respondBinary(pngFile,"image/png")
+respondPNG <- function(pngFile,filename="image.png",download=FALSE) {
+	respondBinary(pngFile,"image/png",filename,download)
 }
 
 #' Respond to HTTP request with PDF data
@@ -225,8 +227,8 @@ respondPNG <- function(pngFile) {
 #' 
 #' @param pdfFile the name of a file containing the binary data
 #' @export
-respondPDF <- function(pdfFile) {
-	respondBinary(pdfFile,"application/pdf")
+respondPDF <- function(pdfFile,filename="image.pdf",download=FALSE) {
+	respondBinary(pdfFile,"application/pdf",filename,download)
 }
 
 
