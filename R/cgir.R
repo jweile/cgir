@@ -199,11 +199,11 @@ respondTEXT <- function(text) {
 #' 
 #' @param binFile the name of a file containing the binary data
 #' @param mime a character string containing the MIME type (e.g. "image/gif")
+#' @param filename the filename to be used in the HTTP header
+#' @param download logical. whether or not to mark this as a download
 #' @export
 #' @examples
-#' error <- "Insufficient amount of coffee!"
-#' errorHTML <- interpolate("../../html/app/error.html",c(message=error))
-#' respondHTML(errorHTML)
+#' respondBinary(imageFile,"image/png","image.png",download=TRUE)
 respondBinary <- function(binFile,mime,filename,download=FALSE) {
 	dispo <- if (download) "attachment" else "inline"
 	cat(paste0("Content-Disposition: ",dispo,"; filename=\"",filename,"\"\n"))
@@ -216,6 +216,8 @@ respondBinary <- function(binFile,mime,filename,download=FALSE) {
 #' Responds to an HTTP request with PNG image data from a given PNG file
 #' 
 #' @param pngFile the name of a file containing the binary data
+#' @param filename the filename to be used in the HTTP header. Defaults to image.png
+#' @param download whether or not to treat this as a download. Defaults to FALSE
 #' @export
 respondPNG <- function(pngFile,filename="image.png",download=FALSE) {
 	respondBinary(pngFile,"image/png",filename,download)
@@ -225,10 +227,24 @@ respondPNG <- function(pngFile,filename="image.png",download=FALSE) {
 #' 
 #' Responds to an HTTP request with PDF data from a given PDF file
 #' 
-#' @param pdfFile the name of a file containing the binary data
+#' @param pdfFile the name of a file containing the binary datav
+#' @param filename the filename to be used in the HTTP header. Defaults to image.pdf
+#' @param download whether or not to treat this as a download. Defaults to FALSE.
 #' @export
 respondPDF <- function(pdfFile,filename="image.pdf",download=FALSE) {
 	respondBinary(pdfFile,"application/pdf",filename,download)
+}
+
+#' Respond to HTTP request with SVG data
+#' 
+#' Responds to an HTTP request with SVG data from a given SVG file
+#' 
+#' @param svgFile the name of a file containing the binary data
+#' @param filename the filename to be used in the HTTP header. Defaults to image.svg
+#' @param download whether or not to treat this as a download. Defaults to FALSE.
+#' @export
+respondSVG <- function(svgFile,filename="image.svg",download=FALSE) {
+	respondBinary(svgFile,"image/svg+xml",filename,download)
 }
 
 

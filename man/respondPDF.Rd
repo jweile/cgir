@@ -4,10 +4,14 @@
 \alias{respondPDF}
 \title{Respond to HTTP request with PDF data}
 \usage{
-respondPDF(pdfFile)
+respondPDF(pdfFile, filename = "image.pdf", download = FALSE)
 }
 \arguments{
-\item{pdfFile}{the name of a file containing the binary data}
+\item{pdfFile}{the name of a file containing the binary datav}
+
+\item{filename}{the filename to be used in the HTTP header. Defaults to image.pdf}
+
+\item{download}{whether or not to treat this as a download. Defaults to FALSE.}
 }
 \description{
 Responds to an HTTP request with PDF data from a given PDF file

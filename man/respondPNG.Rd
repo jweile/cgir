@@ -4,10 +4,14 @@
 \alias{respondPNG}
 \title{Respond to HTTP request with PNG image data}
 \usage{
-respondPNG(pngFile)
+respondPNG(pngFile, filename = "image.png", download = FALSE)
 }
 \arguments{
 \item{pngFile}{the name of a file containing the binary data}
+
+\item{filename}{the filename to be used in the HTTP header. Defaults to image.png}
+
+\item{download}{whether or not to treat this as a download. Defaults to FALSE}
 }
 \description{
 Responds to an HTTP request with PNG image data from a given PNG file

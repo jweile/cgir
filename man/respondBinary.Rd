@@ -4,18 +4,20 @@
 \alias{respondBinary}
 \title{Respond to HTTP request using binary data in a given MIME type}
 \usage{
-respondBinary(binFile, mime)
+respondBinary(binFile, mime, filename, download = FALSE)
 }
 \arguments{
 \item{binFile}{the name of a file containing the binary data}
 
 \item{mime}{a character string containing the MIME type (e.g. "image/gif")}
+
+\item{filename}{the filename to be used in the HTTP header}
+
+\item{download}{logical. whether or not to mark this as a download}
 }
 \description{
 Responds to an HTTP request using binary data a given MIME type
 }
 \examples{
-error <- "Insufficient amount of coffee!"
-errorHTML <- interpolate("../../html/app/error.html",c(message=error))
-respondHTML(errorHTML)
+respondBinary(imageFile,"image/png","image.png",download=TRUE)
 }
